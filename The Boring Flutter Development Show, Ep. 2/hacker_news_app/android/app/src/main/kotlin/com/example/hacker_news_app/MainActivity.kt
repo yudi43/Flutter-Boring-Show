@@ -1,4 +1,4 @@
-package biz.chez.hacker_news_extended
+package com.example.hacker_news_app
 
 import android.os.Bundle
 

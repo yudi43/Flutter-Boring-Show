@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="biz.chez.hacker_news_extended">
+    package="com.example.hacker_news_app">
 
     <!-- io.flutter.app.FlutterApplication is an android.app.Application that
          calls FlutterMain.startInitialization(this); in its onCreate method.
@@ -8,7 +8,7 @@
          FlutterApplication and put your custom class here. -->
     <application
         android:name="io.flutter.app.FlutterApplication"
-        android:label="hacker_news_extended"
+        android:label="hacker_news_app"
         android:icon="@mipmap/ic_launcher">
         <activity
             android:name=".MainActivity"
