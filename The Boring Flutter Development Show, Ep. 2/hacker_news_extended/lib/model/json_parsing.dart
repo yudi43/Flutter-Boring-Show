@@ -1,8 +1,7 @@
 // import 'dart:convert' as json;
 import 'package:built_value/built_value.dart';
-part 'json_parsing.g.dart';
+part 'built_vehicle.g.dart';
 abstract class Article implements Built<Article, ArticleBuilder> {
-  int get id;  
   Article._();
   factory Article([updates(ArticleBuilder b)]) = _$Article;
 }
