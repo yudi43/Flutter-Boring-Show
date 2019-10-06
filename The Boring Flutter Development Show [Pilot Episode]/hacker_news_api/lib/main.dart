@@ -66,16 +66,14 @@ class _MyHomePageState extends State<MyHomePage> {
               new Text(
                 "${e.commentsCount} comments",
               ),
-              new MaterialButton(
-                // onPressed: () {},
+              new IconButton(
+                icon: Icon(Icons.launch),
                 onPressed: () async {
                   final fakeUrl = "http://${e.domain}";
                   if (await canLaunch(fakeUrl)) {
                     launch(fakeUrl);
                   }
                 },
-                child: new Text("Open"),
-                color: Colors.green,
               ),
             ],
           ),

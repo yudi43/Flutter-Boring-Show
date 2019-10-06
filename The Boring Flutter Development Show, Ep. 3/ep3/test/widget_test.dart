@@ -8,7 +8,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-import 'package:hacker_news_extended/main.dart';
+import 'package:ep3/main.dart';
 
 void main() {
   testWidgets('Clicking tile opens it', (WidgetTester tester) async {

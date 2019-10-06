@@ -52,13 +52,13 @@ abstract class Article implements Built<Article, ArticleBuilder> {
 
  List<int> parseTopStories(String jsonStr) {
  return [];
-  final parsed = json.jsonDecode(jsonStr);
-  final listOfIds = List<int>.from(parsed);
-  return listOfIds;
+  // final parsed = json.jsonDecode(jsonStr);
+  // final listOfIds = List<int>.from(parsed);
+  // return listOfIds;
  }
 
 Article parseArticle(String jsonStr) {
   final parsed = json.jsonDecode(jsonStr);
-  Article article = serializers.deserializeWith(Article.serializer, parsed);
+  Article article = standardSerializers.deserializeWith(Article.serializer, parsed);
   return article;
 }

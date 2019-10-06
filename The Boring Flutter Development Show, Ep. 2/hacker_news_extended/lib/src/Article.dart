@@ -14,6 +14,7 @@ class Article {
     this.score,
     this.commentsCount
   });
+
 }
 
 final articles = [
