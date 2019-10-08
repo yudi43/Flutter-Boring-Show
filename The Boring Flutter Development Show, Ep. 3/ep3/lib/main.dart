@@ -3,6 +3,7 @@ import 'src/Article.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 
+import 'package:http/http.dart' as http;
 void main() => runApp(MyApp());
 
 class MyApp extends StatelessWidget {
@@ -29,7 +30,27 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  List<Article> _articles = articles;
+  List<int> _ids = [
+    21182705,
+    21181664,
+    21157404,
+    21161233,
+    21167871,
+    21160238,
+    21184623,
+    21172686,
+    21172936,
+    21182628
+  ];
+
+  Future<Article> _getArticle (int id) async {
+    final storyUrl =
+            'https://hacker-news.firebaseio.com/v0/item/$id.json';
+        final storyRes = await http.get(storyUrl);
+        if (storyRes.statusCode == 200) {
+          return parseArticle(storyRes.body);
+        }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +58,20 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: new RefreshIndicator(
-        onRefresh: () async {
-          await new Future.delayed(const Duration(seconds: 3));
-          setState(() {
-            _articles.removeAt(0);
-          });
-        },
-        child: ListView(
-          children: _articles.map(_buildItem).toList(),
-        ),
+      body: ListView(
+        children: _ids
+            .map((i) => FutureBuilder<Article>(
+              future: _getArticle(i),
+                  builder:
+                      (BuildContext context, AsyncSnapshot<Article> snapshot) {
+                    if(snapshot.connectionState == ConnectionState.done){
+                        return _buildItem(snapshot.data);
+                    }else{
+                      return Center(child: CircularProgressIndicator());
+                    };
+                  },
+                ))
+            .toList(),
       ),
     );
   }
@@ -56,7 +81,7 @@ class _MyHomePageState extends State<MyHomePage> {
       padding: const EdgeInsets.all(14.0),
       child: new ExpansionTile(
         title: new Text(
-          e.text,
+          e.title,
           style: new TextStyle(fontSize: 22),
         ),
         children: <Widget>[
@@ -64,14 +89,14 @@ class _MyHomePageState extends State<MyHomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: <Widget>[
               new Text(
-                "${e.commentsCount} comments",
-              ),
+                  e.type,
+                  ),
               new MaterialButton(
                 // onPressed: () {},
                 onPressed: () async {
-                  final fakeUrl = "http://${e.domain}";
-                  if (await canLaunch(fakeUrl)) {
-                    launch(fakeUrl);
+                  // final fakeUrl = "http://${e.domain}";
+                  if (await canLaunch(e.url)) {
+                    launch(e.url);
                   }
                 },
                 child: new Text("Open"),
