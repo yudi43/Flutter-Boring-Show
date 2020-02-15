@@ -9,6 +9,7 @@ void main() => runApp(MyApp());
 
 //Change in my newer branch and we are trying "merge"
 
+//Change in master
 class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
