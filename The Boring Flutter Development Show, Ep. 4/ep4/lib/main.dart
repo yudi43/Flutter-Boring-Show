@@ -1,14 +1,23 @@
+import 'dart:collection';
+
+import 'package:ep3/src/hn_bloc.dart';
 import 'package:flutter/material.dart';
-import 'src/Article.dart';
+import 'package:ep3/src/Article.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'dart:async';
 
-void main() => runApp(MyApp());
+void main() {
+  final hunBloc = HackerNewsBloc();
+  runApp(MyApp(bloc: hunBloc));
+}
 
-//Change in my newer branch and we are trying "merge"
-
-//Change in master
 class MyApp extends StatelessWidget {
+  final HackerNewsBloc bloc;
+  MyApp({
+    Key key,
+    this.bloc,
+  }) : super(key: key);
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -18,13 +27,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter Demo Home Page', bloc: bloc),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  final HackerNewsBloc bloc;
+  MyHomePage({Key key, this.title, this.bloc}) : super(key: key);
   final String title;
 
   @override
@@ -38,21 +48,13 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: ListView(
-        children: _ids
-            .map((i) => FutureBuilder<Article>(
-                  future: _getArticle(i),
-                  builder:
-                      (BuildContext context, AsyncSnapshot<Article> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      return _buildItem(snapshot.data);
-                    } else {
-                      return Center(child: CircularProgressIndicator());
-                    }
-                    ;
-                  },
-                ))
-            .toList(),
+      body: StreamBuilder<UnmodifiableListView<Article>>(
+        stream: widget.bloc.articles,
+        builder: (context, snapshot) {
+          return ListView(
+            children: snapshot.data.map((e) => _buildItem(e)).toList(),
+          );
+        },
       ),
     );
   }
