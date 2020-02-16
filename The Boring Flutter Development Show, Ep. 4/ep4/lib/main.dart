@@ -4,7 +4,6 @@ import 'package:ep3/src/hn_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:ep3/src/Article.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'dart:async';
 
 void main() {
   final hunBloc = HackerNewsBloc();
@@ -54,6 +53,25 @@ class _MyHomePageState extends State<MyHomePage> {
           return ListView(
             children: snapshot.data.map((e) => _buildItem(e)).toList(),
           );
+        },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.arrow_drop_up),
+            title: Text("Top stories"),
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.new_releases),
+            title: Text("New stories"),
+          )
+        ],
+        onTap: (index) {
+          if (index == 0) {
+            widget.bloc.storiesType.add(StoriesType.topStories);
+          } else {
+            widget.bloc.storiesType.add(StoriesType.newStories);
+          }
         },
       ),
     );
